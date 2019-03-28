@@ -1,7 +1,2 @@
 Mary, Matos, mary@email.com, 869999999
-Lucas, Brito, lucas@email.com, 8699985-2137
-Marco, Penaforte, marco@email.com, 8699999999
-Rafael, Martins, rafa@email.com, (86) 99976-2131
-lucas, brito, lucas@email.com, 999999999
-lucas, Brito, lucas@email.com, 999999999
-rafael, martins, rafa@email.com, 8699999999
+Lucas, Brito, lucas@gmail.com, 8699999999
