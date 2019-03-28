@@ -15,7 +15,7 @@ adicionar() {
     read TELEFONE
     
     VERIFICAR_NOME=`grep -i ${NOME} bd.txt`
-    if [[ ${VERIFICAR_NOME} == "" ]]
+    if [[ -z ${VERIFICAR_NOME} ]]
     then
         echo "${NOME}, ${SOBRENOME}, ${EMAIL}, ${TELEFONE}" >> bd.txt
         echo
@@ -50,8 +50,8 @@ pesquisar() {
     echo "PESQUISAR CONTATO"
     echo "Digite o nome do contato a ser pesquisado: "
     read NOME_PESQUISADO
-    VERIFICAR_NOME = `grep -i ${NOME_PESQUISADO} bd.txt`
-    if [[ ${VERIFICAR_NOME} == "" ]]
+    VERIFICAR_NOME=`grep -i ${NOME_PESQUISADO} bd.txt`
+    if [[ -z ${VERIFICAR_NOME} ]]
     then
         echo "Contato não encontrado!" 
     else
@@ -66,8 +66,9 @@ editar() {
     echo "PESQUISAR CONTATO"
     echo "Digite o nome do contato a ser editado: "
     read NOME_EDITADO
-    VERIFICAR_NOME = `grep -i ${NOME_PESQUISADO} bd.txt`
-    if [[ ${VERIFICAR_NOME} == "" ]]
+    VERIFICAR_NOME=`grep -i "^${NOME_EDITADO}" bd.txt`
+    echo ${VERIFICAR_NOME}
+    if [[ -z ${VERIFICAR_NOME} ]]
     then
         echo "Contato não encontrado! Deseja adicionar o contato? S/N "
         read OPT
@@ -85,7 +86,7 @@ editar() {
         read EMAIL
         echo "Telefone: "
         read TELEFONE
-        sed -i "/${NOME_EDITADO}/d" bd.tx
+        sed -i "/${NOME_EDITADO}/d" bd.txt
         echo "${NOME_EDITADO}, ${SOBRENOME}, ${EMAIL}, ${TELEFONE}" >> bd.txt
     fi
     echo "-----------------------------------------"
@@ -101,8 +102,49 @@ deletar() {
     echo "-----------------------------------------"
 }
 
+trataErro() {
+    echo
+    echo
+    echo
+    echo
+    echo
+    echo "Voce deseja finalizar a agenda? S/N "
+    read OPT
+    if [[ ${OPT} = "S" ]]
+    then
+        echo "Adios amigo! :)"
+        exit 0
+    else
+        clear
+        cat <<! 
+----------------------------------------- 
+|                                       |                
+|            Menu de Usuario            |
+|                                       |
+|     1 - Adicionar entrada             |
+|                                       |
+|     2 - Pesquisar na agenda           |
+|                                       |
+|     3 - Remover entrada               |
+|                                       |
+|     4 - Editar entrada                |
+|                                       |
+|     5 - Exibir agenda                 |
+|                                       |
+|     6 - Sair                          |
+|                                       | 
+|   Digite sua Opcao :                  |
+|                                       |
+-----------------------------------------
+!
+tput cup 16 27 ;
+    fi
+    
+}
+
 while true 
 do
+trap trataErro SIGINT SIGTERM
 clear
 cat <<! 
 ----------------------------------------- 
@@ -137,7 +179,7 @@ done
 
         3) deletar ;;
         
-        4) clear who ;;
+        4) editar ;;
         
         5) exibir ;;
         
